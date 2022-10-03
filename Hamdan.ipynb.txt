@@ -1,0 +1,206 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "jUMDBkjDFZH6"
+      },
+      "outputs": [],
+      "source": [
+        "\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import sklearn"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "from sklearn. datasets import load_boston\n",
+        "df=load_boston()"
+      ],
+      "metadata": {
+        "id": "kGIgXwmcF0nC"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.keys()"
+      ],
+      "metadata": {
+        "id": "lUcrJ5PxF7qg"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(df.data)"
+      ],
+      "metadata": {
+        "id": "s_aZeONtF_qI"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "boston=pd.DataFrame(df.data, columns=df.feature_names) \n",
+        "boston.head()"
+      ],
+      "metadata": {
+        "id": "EImWKIf_GKj0"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "boston['MEDV'] = df.target\n",
+        "boston.head()"
+      ],
+      "metadata": {
+        "id": "bUQ4liuhGU_T"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "boston.isnull()"
+      ],
+      "metadata": {
+        "id": "8X1nD3UOGXnl"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "boston.isnull().sum()"
+      ],
+      "metadata": {
+        "id": "DV_wXQJ1Gcdf"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "\n",
+        "X=boston.drop('MEDV',axis=1)\n",
+        "Y=boston['MEDV']\n",
+        "\n",
+        "X_train,X_test,Y_train,Y_test= train_test_split(X,Y,test_size=0.15, random_state=5)\n",
+        "\n",
+        "print(X_train.shape)\n",
+        "print(X_test.shape)\n",
+        "print(Y_train.shape)\n",
+        "print(Y_test.shape)"
+      ],
+      "metadata": {
+        "id": "vajF3I93GhOH"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "from sklearn.linear_model import LinearRegression\n",
+        "\n",
+        "from sklearn.metrics import mean_squared_error"
+      ],
+      "metadata": {
+        "id": "PcJZ6Bq-GsHI"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "lin_model=LinearRegression()\n",
+        "\n",
+        "lin_model.fit(X_train,Y_train)"
+      ],
+      "metadata": {
+        "id": "0V6IK7YcGzbx"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "y_train_predict=lin_model.predict(X_train)\n",
+        "rmse=(np.sqrt(mean_squared_error(Y_train,y_train_predict)))\n",
+        "\n",
+        "print(\"The model performance for training set\")\n",
+        "print('RMSE is {}'.format(rmse))\n",
+        "print(\"\\n\")\n",
+        "\n",
+        "\n",
+        "y_test_predict=lin_model.predict(X_test)\n",
+        "rmse=(np.sqrt(mean_squared_error(Y_test,y_test_predict)))\n",
+        "\n",
+        "print(\"The model performance for testing set\")\n",
+        "print('RMSE is{}'.format(rmse))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "G1B7FwULG4h0",
+        "outputId": "827d387b-6e8a-42a9-c6cf-ebffaef672a4"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "The model performance for training set\n",
+            "RMSE is 4.710901797319796\n",
+            "\n",
+            "\n",
+            "The model performance for testing set\n",
+            "RMSE is4.687543527902972\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
